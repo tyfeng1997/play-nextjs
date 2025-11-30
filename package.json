@@ -16,6 +16,7 @@
     "@trpc/client": "^11.7.2",
     "@trpc/react-query": "^11.7.2",
     "@trpc/server": "^11.7.2",
+    "better-auth": "^1.4.3",
     "class-variance-authority": "^0.7.1",
     "client-only": "^0.0.1",
     "clsx": "^2.1.1",
@@ -26,6 +27,7 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "server-only": "^0.0.1",
+    "superjson": "^2.2.6",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.1.13"
   },
@@ -35,6 +37,7 @@
     "@types/pg": "^8.15.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "baseline-browser-mapping": "^2.8.32",
     "eslint": "^9",
     "eslint-config-next": "16.0.5",
     "prisma": "^7.0.1",
