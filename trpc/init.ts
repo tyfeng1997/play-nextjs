@@ -1,22 +1,27 @@
-import { initTRPC } from "@trpc/server";
-import { cache } from "react";
-export const createTRPCContext = cache(async () => {
-  /**
-   * @see: https://trpc.io/docs/server/context
-   */
-  return { userId: "user_123" };
+import { initTRPC, TRPCError } from "@trpc/server";
+import { Context } from "./context";
+import SuperJSON from "superjson"; // 推荐使用 superjson 进行序列化
+
+const t = initTRPC.context<Context>().create({
+  transformer: SuperJSON,
 });
-// Avoid exporting the entire t-object
-// since it's not very descriptive.
-// For instance, the use of a t variable
-// is common in i18n libraries.
-const t = initTRPC.create({
-  /**
-   * @see https://trpc.io/docs/server/data-transformers
-   */
-  // transformer: superjson,
+
+const isAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx.session || !ctx.user) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "您必须登录才能执行此操作",
+    });
+  }
+  return next({
+    ctx: {
+      user: ctx.user,
+      session: ctx.session,
+    },
+  });
 });
+
 // Base router and procedure helpers
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
-export const baseProcedure = t.procedure;
+export const protectedProcedure = t.procedure.use(isAuthed);
